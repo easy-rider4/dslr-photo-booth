@@ -50,6 +50,15 @@ def save_particular_pictures(currentPath, picFrom, picTo):
     print('---------------')
     
 
+def save_all_pictures(currentPath):
+    os.chdir(picturePath)
+    getFiles = subprocess.check_output(['gphoto2', '--get-all-files', '--folder=' + config.CAMERA_FOLDER, '--force-overwrite'])
+    os.chdir(currentPath)
+    print('[INFO] --------')
+    print(getFiles.rstrip('\n'))
+    print('---------------')
+    
+
 def get_camera_picture_count():
     fileCount = subprocess.check_output(['gphoto2', '--num-files', '--folder=' + config.CAMERA_FOLDER])
     countList = fileCount.split(': ')
@@ -61,12 +70,23 @@ def get_camera_picture_count():
 # -------------- script
 # open background image
 print('[INFO] photo-booth with dslr started')
-currentPath = os.getcwd()
-background = subprocess.Popen(['feh', '--fullscreen', config.BACKGROUND_IMAGE])
 
+currentPath = os.getcwd()
 picturePath = currentPath + '/pictures'
 if (config.USB_PATH != ''):
     picturePath = config.USB_PATH
+
+#save all prictures from the camera at program start
+save_all_pictures(currentPath)
+#wait till camera is free again
+loadCount = 0
+while (loadCount < 10):
+    time.sleep(1)
+
+
+#open background image
+background = subprocess.Popen(['feh', '--fullscreen', config.BACKGROUND_IMAGE])
+
 
 # wait for input 
 while True:
@@ -98,7 +118,7 @@ while True:
             save_particular_pictures(currentPath, dirPicCount+1, camPicCount)
 
             # wait a moment to save the pics
-            time.sleep(2)
+            time.sleep(1)
 
     #get new directory image count    
     validFiles = glob.glob1(picturePath, '*.JPG')
