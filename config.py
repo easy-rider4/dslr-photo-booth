@@ -3,9 +3,9 @@
 USB_PATH = '';
 
 
-#will be shown as default background image when no pictures are taken
-#at the moment
+#will be shown as default background image while no pictures are taken
 BACKGROUND_IMAGE = '/home/pi/dslr-photo-booth/images/photos.jpg'
+BACKGROUND_IMAGE_LOADING = '/home/pi/dslr-photo-booth/images/photos_loading.jpg'
 
 
 #number of seconds the last taken picture is shown after capturing it

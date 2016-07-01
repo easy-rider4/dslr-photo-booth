@@ -70,6 +70,7 @@ def get_camera_picture_count():
 # -------------- script
 # open background image
 print('[INFO] photo-booth with dslr started')
+backgroundLoading = subprocess.Popen(['feh', '--fullscreen', config.BACKGROUND_IMAGE_LOADING])
 
 currentPath = os.getcwd()
 picturePath = currentPath + '/pictures'
@@ -80,12 +81,15 @@ if (config.USB_PATH != ''):
 save_all_pictures(currentPath)
 #wait till camera is free again
 loadCount = 0
-while (loadCount < 10):
+while (loadCount < 7):
     time.sleep(1)
-
+    loadCount = loadCount + 1
 
 #open background image
 background = subprocess.Popen(['feh', '--fullscreen', config.BACKGROUND_IMAGE])
+time.sleep(1)
+backgroundLoading.terminate()
+backgroundLoading.kill()
 
 
 # wait for input 
