@@ -13,7 +13,7 @@ from PIL import Image
 
 # -------------- set GPIO-Input
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP) # exit program
+GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP) # shut down pi
 
 
 # -------------- functions
@@ -74,8 +74,8 @@ backgroundLoading = subprocess.Popen(['feh', '--fullscreen', config.BACKGROUND_I
 
 currentPath = os.getcwd()
 picturePath = currentPath + '/pictures'
-if (config.USB_PATH != ''):
-    picturePath = config.USB_PATH
+if (config.WEB_GALLERY != ''):
+    picturePath = config.WEB_GALLERY
 
 #save all prictures from the camera at program start
 save_all_pictures(currentPath)
@@ -95,12 +95,12 @@ backgroundLoading.kill()
 # wait for input 
 while True:
 
-    # ----- exit program
-    if (GPIO.input(25) == False):
+    # ----- shutdown pi
+    if (GPIO.input(17) == False):
         print('Bye bye!')
         background.terminate()
 	background.kill()
-        exit()
+        os.system("sudo shutdown -h now")  
 
         
     # ----- check for input
